@@ -1,0 +1,223 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Trivon design system — values from the Trivon brand identity board. */
+
+@theme inline {
+  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  /* Brand */
+  --color-trivon: var(--trivon);
+  --color-forest: var(--forest);
+  --color-lime: var(--lime);
+  --color-ivory: var(--ivory);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-sage: var(--sage);
+  --color-sage-strong: var(--sage-strong);
+  --color-on-dark: var(--on-dark);
+  --color-on-dark-muted: var(--on-dark-muted);
+  --color-line-dark: var(--line-dark);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+}
+
+:root {
+  --radius: 0.875rem; /* 14px — brand: 12–16px */
+
+  --trivon: oklch(0.715 0.166 132.7); /* #79B83F */
+  --forest: oklch(0.428 0.089 141.3); /* #315B2B */
+  --lime: oklch(0.85 0.196 130.1); /* #A2E64A */
+  --ivory: oklch(0.973 0.007 124.4); /* #F5F7F2 */
+  --ink: oklch(0.2 0.007 145.3); /* #141714 */
+  --ink-soft: oklch(0.269 0.03 141); /* deep green-ink for dark cards */
+  --sage: oklch(0.942 0.025 124.3); /* pale-green card tint */
+  --sage-strong: oklch(0.9 0.05 126);
+  --on-dark: oklch(0.973 0.007 124.4);
+  --on-dark-muted: oklch(0.78 0.02 130);
+  --line-dark: oklch(1 0 0 / 0.1);
+
+  --background: var(--ivory);
+  --foreground: var(--ink);
+  --card: var(--sage);
+  --card-foreground: var(--ink);
+  --popover: var(--ivory);
+  --popover-foreground: var(--ink);
+  --primary: var(--trivon);
+  --primary-foreground: var(--ink);
+  --secondary: var(--forest);
+  --secondary-foreground: var(--ivory);
+  --muted: var(--sage);
+  --muted-foreground: oklch(0.45 0.022 137.8);
+  --accent: var(--lime);
+  --accent-foreground: var(--ink);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: var(--ivory);
+  --border: oklch(0.89 0.02 126);
+  --input: oklch(0.86 0.02 126);
+  --ring: var(--forest);
+
+  --gradient-hero: radial-gradient(120% 90% at 70% 10%, oklch(0.428 0.089 141.3 / 0.85) 0%, transparent 55%),
+    radial-gradient(80% 60% at 10% 100%, oklch(0.715 0.166 132.7 / 0.25) 0%, transparent 60%), var(--ink);
+  --gradient-cta: radial-gradient(90% 120% at 50% 0%, oklch(0.428 0.089 141.3) 0%, oklch(0.269 0.03 141) 45%, var(--ink) 100%);
+  --shadow-card: 0 1px 0 oklch(1 0 0 / 0.6) inset, 0 20px 40px -24px oklch(0.2 0.05 140 / 0.35);
+  --shadow-glow: 0 0 0 1px oklch(0.85 0.196 130.1 / 0.4), 0 20px 60px -20px oklch(0.85 0.196 130.1 / 0.55);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+  }
+  :focus-visible {
+    outline: 2px solid var(--lime);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  .on-light :focus-visible {
+    outline-color: var(--forest);
+  }
+  ::selection {
+    background: var(--lime);
+    color: var(--ink);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility bg-hero {
+  background: var(--gradient-hero);
+}
+@utility bg-cta {
+  background: var(--gradient-cta);
+}
+@utility shadow-card {
+  box-shadow: var(--shadow-card);
+}
+@utility shadow-glow {
+  box-shadow: var(--shadow-glow);
+}
+@utility glass {
+  background: oklch(1 0 0 / 0.08);
+  border: 1px solid oklch(1 0 0 / 0.16);
+  backdrop-filter: blur(14px) saturate(140%);
+}
+@utility glass-light {
+  background: oklch(0.973 0.007 124.4 / 0.78);
+  border: 1px solid oklch(0.2 0.007 145.3 / 0.08);
+  backdrop-filter: blur(16px) saturate(160%);
+}
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+@utility container-x {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  @media (min-width: 768px) {
+    padding-inline: 2.5rem;
+  }
+}
+@utility grain {
+  background-image: radial-gradient(oklch(1 0 0 / 0.05) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(400%);
+  }
+}
+@keyframes float-slow {
+  50% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+@utility animate-scan {
+  animation: scan 1.6s var(--ease-out) infinite;
+}
+@utility animate-float {
+  animation: float-slow 6s ease-in-out infinite;
+}
+@utility skeleton {
+  background: linear-gradient(90deg, var(--sage) 0%, var(--sage-strong) 50%, var(--sage) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
