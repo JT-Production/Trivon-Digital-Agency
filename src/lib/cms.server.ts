@@ -96,6 +96,77 @@ const defaults: Record<CollectionName, Array<Omit<ContentRecord, "_id">>> = {
   })),
 };
 let missingDatabaseWarningShown = false;
+let databaseOutageWarningShown = false;
+let usePreviewUntil = 0;
+const previewRetryDelayMs = 15_000;
+
+function isTransientDatabaseError(error: unknown): boolean {
+  if (error == null || typeof error !== "object" || !("name" in error)) return false;
+  const name = error.name;
+  if (
+    typeof name !== "string" ||
+    ![
+      "MongooseServerSelectionError",
+      "MongoServerSelectionError",
+      "MongoNetworkError",
+      "MongoNetworkTimeoutError",
+      "MongoWaitQueueTimeoutError",
+      "MongoTopologyClosedError",
+    ].includes(name)
+  ) {
+    return false;
+  }
+  if (
+    ("code" in error && error.code === 18) ||
+    ("codeName" in error && error.codeName === "AuthenticationFailed")
+  ) {
+    return false;
+  }
+  return !(
+    "message" in error &&
+    typeof error.message === "string" &&
+    /authentication failed|bad auth|authentication error/i.test(error.message)
+  );
+}
+
+async function readPublicContent<T>(read: () => Promise<T>, fallback: () => T): Promise<T> {
+  if (!process.env["MONGODB_URI"]) {
+    if (!missingDatabaseWarningShown) {
+      console.warn(
+        "MONGODB_URI is not configured; serving preview content. Configure MongoDB and run `npm run seed` for CMS data.",
+      );
+      missingDatabaseWarningShown = true;
+    }
+    return fallback();
+  }
+
+  if (Date.now() < usePreviewUntil) return fallback();
+
+  try {
+    const result = await read();
+    usePreviewUntil = 0;
+    databaseOutageWarningShown = false;
+    return result;
+  } catch (error) {
+    if (!isTransientDatabaseError(error)) throw error;
+
+    usePreviewUntil = Date.now() + previewRetryDelayMs;
+    if (!databaseOutageWarningShown) {
+      const errorName =
+        error != null &&
+        typeof error === "object" &&
+        "name" in error &&
+        typeof error.name === "string"
+          ? error.name
+          : "unknown";
+      console.warn(
+        `MongoDB is temporarily unavailable (${errorName}); serving preview content for public reads. Admin and write operations still require the database.`,
+      );
+      databaseOutageWarningShown = true;
+    }
+    return fallback();
+  }
+}
 
 const jsonValueSchema: z.ZodType<JsonValue> = z.lazy(() =>
   z.union([
@@ -131,20 +202,17 @@ export function validateRecord(value: unknown): RecordInput {
 }
 
 export async function listPublicContent(collection: CollectionName): Promise<ContentRecord[]> {
-  if (!process.env["MONGODB_URI"]) {
-    if (!missingDatabaseWarningShown) {
-      console.warn(
-        "MONGODB_URI is not configured; serving preview content. Configure MongoDB and run `npm run seed` for CMS data.",
-      );
-      missingDatabaseWarningShown = true;
-    }
-    return defaults[collection];
-  }
-  await connectDatabase();
-  return cmsModels[collection]
-    .find({ status: "published" })
-    .sort({ order: 1, createdAt: -1 })
-    .lean<ContentRecord[]>();
+  return readPublicContent(
+    async () => {
+      await connectDatabase();
+      const records = await cmsModels[collection]
+        .find({ status: "published" })
+        .sort({ order: 1, createdAt: -1 })
+        .lean<ContentRecord[]>();
+      return records.length > 0 ? records : defaults[collection];
+    },
+    () => defaults[collection],
+  );
 }
 
 export async function listAdminContent(collection: CollectionName): Promise<ContentRecord[]> {
@@ -156,11 +224,8 @@ export async function getPublicRecord(
   collection: CollectionName,
   slug: string,
 ): Promise<ContentRecord | null> {
-  if (!process.env["MONGODB_URI"]) {
-    return defaults[collection].find((record) => record.slug === slug) ?? null;
-  }
-  await connectDatabase();
-  return cmsModels[collection].findOne({ slug, status: "published" }).lean<ContentRecord>();
+  const records = await listPublicContent(collection);
+  return records.find((record) => record.slug === slug) ?? null;
 }
 
 export async function createContent(

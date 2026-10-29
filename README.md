@@ -87,7 +87,7 @@ npm run dev
 
 ## Public pages, CMS, and admin
 
-The app now includes dedicated `/services`, `/work`, `/pricing`, `/insights`, and `/contact` pages, with service, project, and article detail routes. The home page and public pages read their services, projects, plans, FAQs, and articles from MongoDB when configured. Without a database connection, the site intentionally serves the current sample content so the public preview remains usable.
+The app now includes dedicated `/services`, `/work`, `/pricing`, `/insights`, and `/contact` pages, with service, project, and article detail routes. The home page and public pages read their services, projects, plans, FAQs, and articles from MongoDB when configured. If MongoDB is not configured or is temporarily unreachable, public reads serve the sample content so the marketing pages can still render. A database outage is logged once and database reads are retried after a short cooldown. Admin and write operations still require MongoDB and return an error rather than pretending a change succeeded.
 
 ### Configure the database and first admin
 
