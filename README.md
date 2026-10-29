@@ -7,6 +7,7 @@ PROJECT
 Website for "Trivon Digital Agency", a digital agency that designs and builds high-performing websites and web apps, and gets them ranked on Google and in AI search answers (ChatGPT, Perplexity, Google AI Overviews). Audience: growth-minded businesses in the US, UK, Canada and Germany. Core promise: "More Traffic. More Customers. More Growth."
 
 ATTACHED ASSETS
+
 1. Trivon logo (green radial burst symbol + black "Trivon" wordmark). Extract and use it exactly as is. Do not redraw or alter it.
 2. Trivon brand identity board. Follow its colors, typography, shape language and voice strictly.
 3. Reference website (long screenshot). Replicate its structure, layout rhythm, spacing, card style, pill buttons, mono-style section labels, alternating light/dark sections, pinned "How we work" scroll section, pricing cards, blog list and giant footer wordmark. Match its clean, minimal feel and make it better: more polished, more motion, more depth. Take the layout and style only. Do not copy its name, copy, images or branding.
@@ -15,6 +16,7 @@ STACK
 React + TypeScript, Tailwind CSS, Framer Motion, React Three Fiber + drei for 3D, Lenis for smooth scrolling, Lucide icons, shadcn/ui primitives where useful. Organize components so they can migrate to Next.js App Router later (one component per section, no logic in the page file).
 
 DESIGN SYSTEM (from the brand identity)
+
 - Trivon Green #79B83F (primary), Forest Green #315B2B (secondary), Electric Lime #A2E64A (accent), Soft Ivory #F5F7F2 (light background), Ink #141714 (dark and text)
 - Define all as Tailwind theme tokens. Light sections use Soft Ivory with pale-green tinted cards. Dark sections use Ink and Forest Green with Electric Lime accents.
 - Accessibility rule from the brand board: use Ink text on Trivon Green and Electric Lime. Never use white text on Trivon Green.
@@ -23,6 +25,7 @@ DESIGN SYSTEM (from the brand identity)
 - Tone: confident, approachable, forward-thinking. No jargon.
 
 PAGE STRUCTURE (in this order)
+
 1. Navbar: floating pill nav that blurs on scroll, logo, links (Services, Work, Process, Pricing, Insights), CTA "Get a Free Audit". Mobile full-screen menu with staggered links.
 2. Hero (dark Ink/Forest gradient): headline "More Traffic. More Customers. More Growth." Subline about websites that rank on Google and in AI answers. CTAs: "Get a Free Audit" (Electric Lime) and "View Our Work" (ghost). Centerpiece is a 3D scene: the Trivon logo symbol extruded as a floating, slowly rotating 3D object with soft lighting, reacting to mouse movement and scroll. Around it, floating glass chips like "Ranking #1", "Cited by AI", "98 PageSpeed" with gentle parallax.
 3. Stats strip: "A digital agency built to be found." Three count-up stats (clearly marked as placeholder values).
@@ -41,6 +44,7 @@ PAGE STRUCTURE (in this order)
 16. Footer: link columns, social icons, newsletter input, and a giant Electric Lime "Trivon" wordmark that fills the bottom and reveals on scroll.
 
 MOTION AND 3D (premium, not gimmicky)
+
 - Lenis smooth scroll site-wide
 - Split-text headline reveals (word by word, masked), scroll-triggered fade and rise on all sections
 - Scroll-linked parallax, pinned sections, and a scroll progress bar
@@ -80,3 +84,24 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+## Public pages, CMS, and admin
+
+The app now includes dedicated `/services`, `/work`, `/pricing`, `/insights`, and `/contact` pages, with service, project, and article detail routes. The home page and public pages read their services, projects, plans, FAQs, and articles from MongoDB when configured. Without a database connection, the site intentionally serves the current sample content so the public preview remains usable.
+
+### Configure the database and first admin
+
+1. Use Node.js 20 or newer, then install dependencies with `npm install`.
+2. Copy `.env.example` to `.env` and set `MONGODB_URI` to a MongoDB database connection string.
+3. Set `ADMIN_EMAIL` and a unique `ADMIN_PASSWORD` of at least 12 characters. The first request to `/admin` sign-in creates the initial admin account and stores the password as a scrypt hash; sign in using these credentials.
+4. Set `SESSION_SECRET` to a random value of at least 32 characters. For example, generate one with `node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"`.
+5. To add the example CMS records, run `npm run seed`. Seeding only inserts records whose slugs do not already exist; it does not replace existing content.
+6. Start the development server with `npm run dev`, then visit `/admin` to sign in and manage Services, Work, Pricing, Insights, FAQs, and inquiries.
+
+Image uploads are optional. Add `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` to enable authenticated image uploads in the dashboard. Uploads accept JPEG, PNG, WebP, and AVIF files up to 8 MB.
+
+### Production
+
+The production build uses Nitro's `node-server` preset because Mongoose requires Node.js. Run `npm run build`, then `npm start` to serve `.output/server/index.mjs`. Configure the same environment variables on the Node-compatible host. Do not deploy this Mongoose build to a Cloudflare Workers runtime.
+
+The API is served by TanStack Start route handlers under `/api`: public CMS reads, admin-only CMS writes and uploads, inquiry submissions, newsletter signups, and session/login/logout operations. Admin sessions use an HttpOnly, SameSite=Strict cookie, an 8-hour signed token, and a temporary lock after five failed password attempts. Set all secrets only in local/deployment environment configuration; `.env` is ignored by Git.

@@ -10,33 +10,280 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as InsightsRouteImport } from './routes/insights'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as WorkRouteImport } from './routes/work'
+import { Route as ApiInquiriesRouteImport } from './routes/api.inquiries'
+import { Route as ApiNewsletterRouteImport } from './routes/api.newsletter'
+import { Route as ApiUploadRouteImport } from './routes/api.upload'
+import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
+import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
+import { Route as WorkSlugRouteImport } from './routes/work.$slug'
+import { Route as ApiAdminStatsRouteImport } from './routes/api.admin.stats'
+import { Route as ApiAuthLoginRouteImport } from './routes/api.auth.login'
+import { Route as ApiAuthLogoutRouteImport } from './routes/api.auth.logout'
+import { Route as ApiAuthSessionRouteImport } from './routes/api.auth.session'
+import { Route as ApiContentCollectionRouteImport } from './routes/api.content.$collection'
+import { Route as ApiInquiriesIdRouteImport } from './routes/api.inquiries.$id'
+import { Route as ApiContentCollectionSlugRouteImport } from './routes/api.content.$collection.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsRoute = InsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkRoute = WorkRouteImport.update({
+  id: '/work',
+  path: '/work',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiInquiriesRoute = ApiInquiriesRouteImport.update({
+  id: '/api/inquiries',
+  path: '/api/inquiries',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiNewsletterRoute = ApiNewsletterRouteImport.update({
+  id: '/api/newsletter',
+  path: '/api/newsletter',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiUploadRoute = ApiUploadRouteImport.update({
+  id: '/api/upload',
+  path: '/api/upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsSlugRoute = InsightsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => InsightsRoute,
+} as any)
+const ServicesSlugRoute = ServicesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const WorkSlugRoute = WorkSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => WorkRoute,
+} as any)
+const ApiAdminStatsRoute = ApiAdminStatsRouteImport.update({
+  id: '/api/admin/stats',
+  path: '/api/admin/stats',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthLoginRoute = ApiAuthLoginRouteImport.update({
+  id: '/api/auth/login',
+  path: '/api/auth/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthLogoutRoute = ApiAuthLogoutRouteImport.update({
+  id: '/api/auth/logout',
+  path: '/api/auth/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthSessionRoute = ApiAuthSessionRouteImport.update({
+  id: '/api/auth/session',
+  path: '/api/auth/session',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiContentCollectionRoute = ApiContentCollectionRouteImport.update({
+  id: '/api/content/$collection',
+  path: '/api/content/$collection',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiInquiriesIdRoute = ApiInquiriesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => ApiInquiriesRoute,
+} as any)
+const ApiContentCollectionSlugRoute =
+  ApiContentCollectionSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => ApiContentCollectionRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/contact': typeof ContactRoute
+  '/insights': typeof InsightsRouteWithChildren
+  '/pricing': typeof PricingRoute
+  '/services': typeof ServicesRouteWithChildren
+  '/work': typeof WorkRouteWithChildren
+  '/api/inquiries': typeof ApiInquiriesRouteWithChildren
+  '/api/newsletter': typeof ApiNewsletterRoute
+  '/api/upload': typeof ApiUploadRoute
+  '/insights/$slug': typeof InsightsSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/work/$slug': typeof WorkSlugRoute
+  '/api/admin/stats': typeof ApiAdminStatsRoute
+  '/api/auth/login': typeof ApiAuthLoginRoute
+  '/api/auth/logout': typeof ApiAuthLogoutRoute
+  '/api/auth/session': typeof ApiAuthSessionRoute
+  '/api/content/$collection': typeof ApiContentCollectionRouteWithChildren
+  '/api/inquiries/$id': typeof ApiInquiriesIdRoute
+  '/api/content/$collection/$slug': typeof ApiContentCollectionSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/contact': typeof ContactRoute
+  '/insights': typeof InsightsRouteWithChildren
+  '/pricing': typeof PricingRoute
+  '/services': typeof ServicesRouteWithChildren
+  '/work': typeof WorkRouteWithChildren
+  '/api/inquiries': typeof ApiInquiriesRouteWithChildren
+  '/api/newsletter': typeof ApiNewsletterRoute
+  '/api/upload': typeof ApiUploadRoute
+  '/insights/$slug': typeof InsightsSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/work/$slug': typeof WorkSlugRoute
+  '/api/admin/stats': typeof ApiAdminStatsRoute
+  '/api/auth/login': typeof ApiAuthLoginRoute
+  '/api/auth/logout': typeof ApiAuthLogoutRoute
+  '/api/auth/session': typeof ApiAuthSessionRoute
+  '/api/content/$collection': typeof ApiContentCollectionRouteWithChildren
+  '/api/inquiries/$id': typeof ApiInquiriesIdRoute
+  '/api/content/$collection/$slug': typeof ApiContentCollectionSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/contact': typeof ContactRoute
+  '/insights': typeof InsightsRouteWithChildren
+  '/pricing': typeof PricingRoute
+  '/services': typeof ServicesRouteWithChildren
+  '/work': typeof WorkRouteWithChildren
+  '/api/inquiries': typeof ApiInquiriesRouteWithChildren
+  '/api/newsletter': typeof ApiNewsletterRoute
+  '/api/upload': typeof ApiUploadRoute
+  '/insights/$slug': typeof InsightsSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/work/$slug': typeof WorkSlugRoute
+  '/api/admin/stats': typeof ApiAdminStatsRoute
+  '/api/auth/login': typeof ApiAuthLoginRoute
+  '/api/auth/logout': typeof ApiAuthLogoutRoute
+  '/api/auth/session': typeof ApiAuthSessionRoute
+  '/api/content/$collection': typeof ApiContentCollectionRouteWithChildren
+  '/api/inquiries/$id': typeof ApiInquiriesIdRoute
+  '/api/content/$collection/$slug': typeof ApiContentCollectionSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/contact'
+    | '/insights'
+    | '/pricing'
+    | '/services'
+    | '/work'
+    | '/api/inquiries'
+    | '/api/newsletter'
+    | '/api/upload'
+    | '/insights/$slug'
+    | '/services/$slug'
+    | '/work/$slug'
+    | '/api/admin/stats'
+    | '/api/auth/login'
+    | '/api/auth/logout'
+    | '/api/auth/session'
+    | '/api/content/$collection'
+    | '/api/inquiries/$id'
+    | '/api/content/$collection/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin'
+    | '/contact'
+    | '/insights'
+    | '/pricing'
+    | '/services'
+    | '/work'
+    | '/api/inquiries'
+    | '/api/newsletter'
+    | '/api/upload'
+    | '/insights/$slug'
+    | '/services/$slug'
+    | '/work/$slug'
+    | '/api/admin/stats'
+    | '/api/auth/login'
+    | '/api/auth/logout'
+    | '/api/auth/session'
+    | '/api/content/$collection'
+    | '/api/inquiries/$id'
+    | '/api/content/$collection/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/contact'
+    | '/insights'
+    | '/pricing'
+    | '/services'
+    | '/work'
+    | '/api/inquiries'
+    | '/api/newsletter'
+    | '/api/upload'
+    | '/insights/$slug'
+    | '/services/$slug'
+    | '/work/$slug'
+    | '/api/admin/stats'
+    | '/api/auth/login'
+    | '/api/auth/logout'
+    | '/api/auth/session'
+    | '/api/content/$collection'
+    | '/api/inquiries/$id'
+    | '/api/content/$collection/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
+  ContactRoute: typeof ContactRoute
+  InsightsRoute: typeof InsightsRouteWithChildren
+  PricingRoute: typeof PricingRoute
+  ServicesRoute: typeof ServicesRouteWithChildren
+  WorkRoute: typeof WorkRouteWithChildren
+  ApiInquiriesRoute: typeof ApiInquiriesRouteWithChildren
+  ApiNewsletterRoute: typeof ApiNewsletterRoute
+  ApiUploadRoute: typeof ApiUploadRoute
+  ApiAdminStatsRoute: typeof ApiAdminStatsRoute
+  ApiAuthLoginRoute: typeof ApiAuthLoginRoute
+  ApiAuthLogoutRoute: typeof ApiAuthLogoutRoute
+  ApiAuthSessionRoute: typeof ApiAuthSessionRoute
+  ApiContentCollectionRoute: typeof ApiContentCollectionRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +295,215 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights': {
+      id: '/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof InsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work': {
+      id: '/work'
+      path: '/work'
+      fullPath: '/work'
+      preLoaderRoute: typeof WorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/inquiries': {
+      id: '/api/inquiries'
+      path: '/api/inquiries'
+      fullPath: '/api/inquiries'
+      preLoaderRoute: typeof ApiInquiriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/newsletter': {
+      id: '/api/newsletter'
+      path: '/api/newsletter'
+      fullPath: '/api/newsletter'
+      preLoaderRoute: typeof ApiNewsletterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/upload': {
+      id: '/api/upload'
+      path: '/api/upload'
+      fullPath: '/api/upload'
+      preLoaderRoute: typeof ApiUploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights/$slug': {
+      id: '/insights/$slug'
+      path: '/$slug'
+      fullPath: '/insights/$slug'
+      preLoaderRoute: typeof InsightsSlugRouteImport
+      parentRoute: typeof InsightsRoute
+    }
+    '/services/$slug': {
+      id: '/services/$slug'
+      path: '/$slug'
+      fullPath: '/services/$slug'
+      preLoaderRoute: typeof ServicesSlugRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/work/$slug': {
+      id: '/work/$slug'
+      path: '/$slug'
+      fullPath: '/work/$slug'
+      preLoaderRoute: typeof WorkSlugRouteImport
+      parentRoute: typeof WorkRoute
+    }
+    '/api/admin/stats': {
+      id: '/api/admin/stats'
+      path: '/api/admin/stats'
+      fullPath: '/api/admin/stats'
+      preLoaderRoute: typeof ApiAdminStatsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/login': {
+      id: '/api/auth/login'
+      path: '/api/auth/login'
+      fullPath: '/api/auth/login'
+      preLoaderRoute: typeof ApiAuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/logout': {
+      id: '/api/auth/logout'
+      path: '/api/auth/logout'
+      fullPath: '/api/auth/logout'
+      preLoaderRoute: typeof ApiAuthLogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/session': {
+      id: '/api/auth/session'
+      path: '/api/auth/session'
+      fullPath: '/api/auth/session'
+      preLoaderRoute: typeof ApiAuthSessionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/content/$collection': {
+      id: '/api/content/$collection'
+      path: '/api/content/$collection'
+      fullPath: '/api/content/$collection'
+      preLoaderRoute: typeof ApiContentCollectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/inquiries/$id': {
+      id: '/api/inquiries/$id'
+      path: '/$id'
+      fullPath: '/api/inquiries/$id'
+      preLoaderRoute: typeof ApiInquiriesIdRouteImport
+      parentRoute: typeof ApiInquiriesRoute
+    }
+    '/api/content/$collection/$slug': {
+      id: '/api/content/$collection/$slug'
+      path: '/$slug'
+      fullPath: '/api/content/$collection/$slug'
+      preLoaderRoute: typeof ApiContentCollectionSlugRouteImport
+      parentRoute: typeof ApiContentCollectionRoute
+    }
   }
 }
 
+interface InsightsRouteChildren {
+  InsightsSlugRoute: typeof InsightsSlugRoute
+}
+
+const InsightsRouteChildren: InsightsRouteChildren = {
+  InsightsSlugRoute: InsightsSlugRoute,
+}
+
+const InsightsRouteWithChildren = InsightsRoute._addFileChildren(
+  InsightsRouteChildren,
+)
+
+interface ServicesRouteChildren {
+  ServicesSlugRoute: typeof ServicesSlugRoute
+}
+
+const ServicesRouteChildren: ServicesRouteChildren = {
+  ServicesSlugRoute: ServicesSlugRoute,
+}
+
+const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
+  ServicesRouteChildren,
+)
+
+interface WorkRouteChildren {
+  WorkSlugRoute: typeof WorkSlugRoute
+}
+
+const WorkRouteChildren: WorkRouteChildren = {
+  WorkSlugRoute: WorkSlugRoute,
+}
+
+const WorkRouteWithChildren = WorkRoute._addFileChildren(WorkRouteChildren)
+
+interface ApiInquiriesRouteChildren {
+  ApiInquiriesIdRoute: typeof ApiInquiriesIdRoute
+}
+
+const ApiInquiriesRouteChildren: ApiInquiriesRouteChildren = {
+  ApiInquiriesIdRoute: ApiInquiriesIdRoute,
+}
+
+const ApiInquiriesRouteWithChildren = ApiInquiriesRoute._addFileChildren(
+  ApiInquiriesRouteChildren,
+)
+
+interface ApiContentCollectionRouteChildren {
+  ApiContentCollectionSlugRoute: typeof ApiContentCollectionSlugRoute
+}
+
+const ApiContentCollectionRouteChildren: ApiContentCollectionRouteChildren = {
+  ApiContentCollectionSlugRoute: ApiContentCollectionSlugRoute,
+}
+
+const ApiContentCollectionRouteWithChildren =
+  ApiContentCollectionRoute._addFileChildren(ApiContentCollectionRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
+  ContactRoute: ContactRoute,
+  InsightsRoute: InsightsRouteWithChildren,
+  PricingRoute: PricingRoute,
+  ServicesRoute: ServicesRouteWithChildren,
+  WorkRoute: WorkRouteWithChildren,
+  ApiInquiriesRoute: ApiInquiriesRouteWithChildren,
+  ApiNewsletterRoute: ApiNewsletterRoute,
+  ApiUploadRoute: ApiUploadRoute,
+  ApiAdminStatsRoute: ApiAdminStatsRoute,
+  ApiAuthLoginRoute: ApiAuthLoginRoute,
+  ApiAuthLogoutRoute: ApiAuthLogoutRoute,
+  ApiAuthSessionRoute: ApiAuthSessionRoute,
+  ApiContentCollectionRoute: ApiContentCollectionRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

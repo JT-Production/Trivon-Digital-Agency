@@ -14,4 +14,26 @@ describe("App routing", () => {
 
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
+
+  it("matches public content, detail, admin, and API routes", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+    const paths = [
+      "/services",
+      "/services/design",
+      "/work",
+      "/work/harbor-pine",
+      "/pricing",
+      "/insights",
+      "/insights/search-guide",
+      "/contact",
+      "/admin",
+      "/api/auth/login",
+      "/api/content/services",
+      "/api/content/services/design",
+    ];
+
+    for (const path of paths) {
+      expect(router.matchRoutes(path).at(-1)?.routeId, path).not.toBe(rootRouteId);
+    }
+  });
 });

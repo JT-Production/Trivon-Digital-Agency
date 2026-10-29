@@ -1,12 +1,15 @@
 import { AnimatePresence, motion, useScroll } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Menu, X, ArrowRight } from "lucide-react";
-import logo from "@/assets/trivon-logo.png.asset.json";
+import logo from "@/assets/trivon-logo.png";
 import { NAV_LINKS } from "@/content/site";
+import { useRouterState } from "@tanstack/react-router";
 import { Pill } from "./primitives";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const onHome = pathname === "/";
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -27,14 +30,30 @@ export function Navbar() {
           scrolled ? "glass-light shadow-card" : "bg-ivory",
         )}
       >
-        <a href="#top" aria-label="Trivon Digital Agency, home" className="shrink-0">
-          <img src={logo.url} alt="Trivon" width={120} height={41} className="h-8 w-auto" />
+        <a
+          href={onHome ? "#top" : "/"}
+          aria-label="Trivon Digital Agency, home"
+          className="shrink-0"
+        >
+          <img
+            src={logo}
+            alt="Trivon"
+            width={1000}
+            height={1000}
+            className="h-10 w-full object-fill"
+          />
         </a>
         <ul className="hidden items-center gap-1 lg:flex">
           {NAV_LINKS.map((l) => (
             <li key={l.href}>
               <a
-                href={l.href}
+                href={
+                  onHome
+                    ? l.href
+                    : l.label === "Process"
+                      ? "/services#process"
+                      : `/${l.label.toLowerCase()}`
+                }
                 className="rounded-full px-4 py-2 text-sm font-medium text-ink/80 transition-colors hover:bg-sage hover:text-ink"
               >
                 {l.label}
@@ -44,8 +63,12 @@ export function Navbar() {
         </ul>
         <div className="flex items-center gap-2">
           <div className="hidden sm:block">
-            <Pill href="#audit" variant="ink">
-              Get a Free Audit <ArrowRight className="size-4 transition-transform group-hover/pill:translate-x-0.5" strokeWidth={2} />
+            <Pill href={onHome ? "#audit" : "/#audit"} variant="ink">
+              Get a Free Audit{" "}
+              <ArrowRight
+                className="size-4 transition-transform group-hover/pill:translate-x-0.5"
+                strokeWidth={2}
+              />
             </Pill>
           </div>
           <button
@@ -90,7 +113,13 @@ export function Navbar() {
                   transition={{ delay: 0.25 + i * 0.07, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <a
-                    href={l.href}
+                    href={
+                      onHome
+                        ? l.href
+                        : l.label === "Process"
+                          ? "/services#process"
+                          : `/${l.label.toLowerCase()}`
+                    }
                     onClick={() => setOpen(false)}
                     className="flex items-baseline gap-4 py-2 font-display text-5xl font-semibold tracking-tight"
                   >
@@ -100,7 +129,12 @@ export function Navbar() {
                 </motion.li>
               ))}
             </ul>
-            <Pill href="#audit" variant="lime" size="lg" onClick={() => setOpen(false)}>
+            <Pill
+              href={onHome ? "#audit" : "/#audit"}
+              variant="lime"
+              size="lg"
+              onClick={() => setOpen(false)}
+            >
               Get a Free Audit
             </Pill>
           </motion.div>

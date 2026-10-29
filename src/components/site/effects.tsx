@@ -4,6 +4,8 @@ import Lenis from "lenis";
 import symbol from "@/assets/trivon-symbol.png.asset.json";
 import { Pill } from "./primitives";
 import { ArrowRight } from "lucide-react";
+import { LazyCanvas } from "../three/LazyCanvas";
+import logo from "@/assets/trivon-logo.png"
 
 const prefersReduced = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -123,7 +125,7 @@ export function Intro() {
           transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
         >
           <motion.img
-            src={symbol.url}
+            src={logo}
             alt=""
             width={96}
             height={105}
@@ -132,6 +134,7 @@ export function Intro() {
             transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
             className="w-24"
           />
+        
         </motion.div>
       )}
     </AnimatePresence>

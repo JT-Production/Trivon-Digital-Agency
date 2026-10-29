@@ -1,11 +1,22 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Bot, Check, Code2, PenTool, Search, ArrowRight } from "lucide-react";
-import { SERVICES } from "@/content/site";
 import { Pill, Reveal, SectionLabel, SplitText } from "@/components/site/primitives";
+import type { CmsItem } from "@/lib/cms-types";
 
 const icons = { design: PenTool, dev: Code2, seo: Search, geo: Bot };
 
-export function Services() {
+export function Services({ items }: { items: CmsItem[] }) {
+  const services = items.map((item) => ({
+    key: item.slug,
+    title: item.title,
+    body:
+      typeof item.data["body"] === "string"
+        ? item.data["body"]
+        : "A practical service built around your business goals.",
+    points: Array.isArray(item.data["points"])
+      ? item.data["points"].filter((point): point is string => typeof point === "string")
+      : [],
+  }));
   return (
     <section id="services" aria-labelledby="services-h" className="on-light pb-24 md:pb-36">
       <div className="container-x">
@@ -16,13 +27,13 @@ export function Services() {
             className="font-display text-4xl font-semibold leading-[1.05] md:text-6xl"
           />
           <Reveal>
-            <Pill href="#pricing" variant="ink">
+            <Pill href="/services" variant="ink">
               View services <ArrowRight className="size-4" strokeWidth={2} />
             </Pill>
           </Reveal>
         </div>
         <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {SERVICES.map((s, i) => (
+          {services.map((s, i) => (
             <li key={s.key} className="h-full">
               <Reveal delay={i * 0.08} className="h-full">
                 <TiltCard s={s} />
@@ -35,8 +46,8 @@ export function Services() {
   );
 }
 
-function TiltCard({ s }: { s: (typeof SERVICES)[number] }) {
-  const Icon = icons[s.key];
+function TiltCard({ s }: { s: { key: string; title: string; body: string; points: string[] } }) {
+  const Icon = icons[s.key as keyof typeof icons] ?? Search;
   const mx = useMotionValue(0.5);
   const my = useMotionValue(0.5);
   const rx = useSpring(useTransform(my, [0, 1], [8, -8]), { stiffness: 200, damping: 20 });
@@ -60,11 +71,17 @@ function TiltCard({ s }: { s: (typeof SERVICES)[number] }) {
         <Icon className="size-5" strokeWidth={2} />
       </span>
       <h3 className="mt-auto pt-10 font-display text-xl font-semibold">{s.title}</h3>
-      <p className="mt-3 text-sm leading-relaxed text-muted-foreground transition-colors group-hover:text-on-dark-muted">{s.body}</p>
+      <p className="mt-3 text-sm leading-relaxed text-muted-foreground transition-colors group-hover:text-on-dark-muted">
+        {s.body}
+      </p>
       <ul className="mt-5 space-y-2 text-sm">
         {s.points.map((p) => (
           <li key={p} className="flex items-center gap-2">
-            <Check className="size-4 text-forest transition-colors group-hover:text-lime" strokeWidth={2} /> {p}
+            <Check
+              className="size-4 text-forest transition-colors group-hover:text-lime"
+              strokeWidth={2}
+            />{" "}
+            {p}
           </li>
         ))}
       </ul>

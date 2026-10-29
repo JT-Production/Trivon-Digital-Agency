@@ -12,8 +12,9 @@ import { Pricing } from "@/components/sections/Pricing";
 import { Audit } from "@/components/sections/Audit";
 import { FAQ, Insights } from "@/components/sections/FaqInsights";
 import { FinalCta, Footer } from "@/components/sections/FinalCta";
+import type { HomepageContent } from "@/lib/cms-types";
 
-export function HomePage() {
+export function HomePage({ content }: { content: HomepageContent }) {
   return (
     <>
       <Intro />
@@ -26,15 +27,15 @@ export function HomePage() {
         <Stats />
         <LogoMarquee />
         <About />
-        <Services />
+        <Services items={content.services} />
         <Process />
-        <Portfolio />
+        <Portfolio items={content.projects} />
         <CaseStudies />
         <Testimonials />
-        <Pricing />
+        <Pricing items={content.pricing} />
         <Audit />
-        <FAQ />
-        <Insights />
+        <FAQ items={content.faqs} />
+        <Insights items={content.articles} />
         <FinalCta />
       </main>
       <Footer />
